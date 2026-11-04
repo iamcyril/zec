@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 log_dir = "logs"
 app_log = os.path.join(log_dir, "app.log")
@@ -12,7 +12,7 @@ print(f"ai_activity.log   : {os.path.exists(ai_log)} ({os.path.getsize(ai_log)} 
 print()
 print("=== ai_activity.log (all lines) ===")
 with open(ai_log, encoding="utf-8") as f:
-    lines = [l.strip() for l in f if l.strip()]
+    lines = [line.strip() for l in f if l.strip()]
 
 print(f"Total JSON lines: {len(lines)}")
 all_valid = True
