@@ -1,0 +1,42 @@
+# ─── Virtual environment ────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ─── Python caches ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ─── Environment & secrets ──────────────────────────────────
+.env
+*.env.local
+
+# ─── Logs (keep .gitkeep placeholder) ───────────────────────
+logs/*.log
+logs/*.log.*
+
+# ─── Data directories (keep .gitkeep placeholders) ──────────
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# ─── Tool caches ────────────────────────────────────────────
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.coveragerc
+
+# ─── OS artifacts ───────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

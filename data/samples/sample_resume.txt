@@ -1,0 +1,43 @@
+Connor Thomas
+MERN Stack Developer
+Email: ct@example.com
+Phone: +1 555-234-5678
+Location: Austin, TX
+
+SUMMARY
+-------
+Results-driven MERN stack developer with 3 years of experience building
+scalable web applications. Passionate about clean code, performance, and
+delivering great user experiences.
+
+EXPERIENCE
+----------
+Software Developer | TechFlow Inc. | Jan 2022 – Present (2 years)
+- Developed and maintained RESTful APIs using Node.js and Express
+- Built responsive React front-end components integrated with MongoDB
+- Deployed services on Docker containers; managed CI/CD pipelines with Git
+- Collaborated with product teams to deliver features on time
+
+Junior Developer | StartupXYZ | Jan 2021 – Dec 2021 (1 year)
+- Built CRUD applications using React and Node.js
+- Managed MongoDB databases and wrote complex aggregation pipelines
+- Contributed to Docker-based deployment workflows
+
+3 years of experience in full-stack JavaScript development.
+
+SKILLS
+------
+- Languages: JavaScript, TypeScript
+- Front-end: React
+- Back-end: Node.js, Express
+- Databases: MongoDB
+- DevOps: Docker, Git
+- Currently learning: AWS, Kubernetes
+
+EDUCATION
+---------
+B.Sc. Computer Science | State University | 2020
+
+REFERENCES
+----------
+Available on request.

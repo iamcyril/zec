@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "zecpath-ai"
+version = "0.1.0"
+description = "Zecpath — AI-powered hiring platform: ATS, voice screening, interviews, scoring"
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "Proprietary" }
+authors = [{ name = "Zecpath Team" }]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ats_engine*", "interview_ai*", "parsers*", "scoring*", "screening_ai*", "utils*"]
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+# ---------------------------------------------------------------------------
+# Ruff
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "D"]
+ignore = [
+    "D100",  # Missing docstring in public module
+    "D104",  # Missing docstring in public package
+    "D107",  # Missing docstring in __init__
+    "D203",  # one-blank-line-before-class (conflicts with D211)
+    "D213",  # multi-line-summary-second-line (conflicts with D212)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "N802", "S101"]
+"scripts/*" = ["D", "T201"]
+
+# ---------------------------------------------------------------------------
+# Mypy
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = ["tests/", "scripts/", ".venv/"]
