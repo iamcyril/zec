@@ -107,6 +107,7 @@ def _format_report(
 
 
 def main() -> int:
+    """Batch-extract all resumes in the raw directory and write a summary report."""
     parser = argparse.ArgumentParser(description="Batch-extract all resumes in data/raw/")
     parser.add_argument("--raw-dir", default="data/raw", help="Input directory (default: data/raw)")
     parser.add_argument("--log-dir", default="logs",    help="Log directory (default: logs)")
