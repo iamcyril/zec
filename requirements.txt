@@ -13,3 +13,6 @@ pytesseract>=0.3.13      # OCR engine wrapper (requires Tesseract on PATH)
 # spacy>=3.7
 # scikit-learn>=1.4
 # openai>=1.0
+# Testing
+pytest>=8.0
+reportlab>=4.0
