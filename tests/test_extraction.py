@@ -14,7 +14,6 @@ at test time so the test suite is fully self-contained.
 from __future__ import annotations
 
 import json
-import os
 from io import BytesIO
 from pathlib import Path
 
@@ -27,7 +26,6 @@ from parsers.docx_reader import read as read_docx
 from parsers.extractor import extract_file
 from parsers.reader_factory import read_file
 from utils.text_cleaner import clean
-
 
 # ---------------------------------------------------------------------------
 # Helper: create a simple PDF in memory / on disk
@@ -89,7 +87,7 @@ def _make_bullet_docx(path: Path) -> None:
 def _make_headings_docx(path: Path) -> None:
     """Write a DOCX with synonym headings that should normalise."""
     doc = _DocxDoc()
-    doc.add_paragraph("WORK HISTORY")      # → Experience
+    doc.add_paragraph("WORK HISTORY")  # → Experience
     doc.add_paragraph("Did some work at Acme Corp")
     doc.add_paragraph("TECHNICAL SKILLS")  # → Skills
     doc.add_paragraph("Python, React, Docker")
@@ -125,7 +123,9 @@ class TestSingleColumnPdf:
 
     def test_ocr_not_used_for_normal_pdf(self, tmp_path: Path) -> None:
         pdf = tmp_path / "normal.pdf"
-        _make_single_col_pdf(pdf, ["This is readable text with enough characters to pass threshold"])
+        _make_single_col_pdf(
+            pdf, ["This is readable text with enough characters to pass threshold"]
+        )
         result = read_file(pdf)
         assert result["ocr_used"] is False
 
@@ -187,8 +187,15 @@ class TestBulletNormalisation:
         cleaned = clean(result["text"])
         text = cleaned["text"]
         # Every line that had a bullet should now start with "- "
-        bullet_lines = [ln for ln in text.splitlines() if "developer" in ln or "expert" in ln
-                        or "skills" in ln.lower() or "knowledge" in ln or "certified" in ln]
+        bullet_lines = [
+            ln
+            for ln in text.splitlines()
+            if "developer" in ln
+            or "expert" in ln
+            or "skills" in ln.lower()
+            or "knowledge" in ln
+            or "certified" in ln
+        ]
         assert bullet_lines, "Expected at least one bullet line in output"
         for line in bullet_lines:
             assert line.startswith("- "), f"Expected '- ' prefix, got: {line!r}"
@@ -321,7 +328,9 @@ class TestExtractorOutputFiles:
         assert "sections" in record
         assert "Skills" in record["sections"]
 
-    def test_extracted_json_has_required_keys(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_extracted_json_has_required_keys(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         pdf = tmp_path / "single_col.pdf"
         _make_single_col_pdf(pdf, ["EXPERIENCE", "Worked at Acme Corp for 3 years"])
         monkeypatch.chdir(tmp_path)
@@ -346,7 +355,9 @@ class TestEmptyDocx:
         # Should succeed (not error) but warnings may flag empty text
         assert result["status"] == "ok"
 
-    def test_empty_docx_char_count_zero(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_empty_docx_char_count_zero(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         docx = tmp_path / "empty_resume2.docx"
         _make_empty_docx(docx)
         monkeypatch.chdir(tmp_path)

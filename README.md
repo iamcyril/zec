@@ -103,8 +103,8 @@ from parsers.extractor import extract_file
 
 # Single file
 result = extract_file("data/raw/john_smith.pdf")
-print(result["status"])      # "ok" or "error"
-print(result["sections"])    # ["Summary", "Experience", "Skills", ...]
+print(result["status"])  # "ok" or "error"
+print(result["sections"])  # ["Summary", "Experience", "Skills", ...]
 print(result["char_count"])  # int
 ```
 
@@ -192,7 +192,7 @@ logger.info("Processing started for job %s", job_id)
 # AI decision event (written to logs/ai_activity.log as JSON)
 log_ai_event(
     "ats.scored",
-    candidate_id="c-001",   # opaque ID only — never PII
+    candidate_id="c-001",  # opaque ID only — never PII
     job_id="j-042",
     score=87.5,
     decision="selected",

@@ -59,9 +59,9 @@ def main() -> None:
     print("[3/3] Aggregating scores…")
     scores = {
         "ats": ats.score,
-        "screening": 78.0,   # mock screening score
-        "interview": 82.0,   # mock interview score
-        "technical": 75.0,   # mock technical score
+        "screening": 78.0,  # mock screening score
+        "interview": 82.0,  # mock interview score
+        "technical": 75.0,  # mock technical score
     }
     final = aggregate(
         scores,

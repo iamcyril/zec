@@ -83,7 +83,7 @@ Every AI decision point **must** call `log_ai_event()` with at minimum:
 ```python
 log_ai_event(
     "ats.scored",
-    candidate_id=candidate_id,   # opaque ID only
+    candidate_id=candidate_id,  # opaque ID only
     job_id=requirements.job_id,
     score=total_score,
 )

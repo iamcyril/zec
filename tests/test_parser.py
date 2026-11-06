@@ -35,6 +35,7 @@ Tech: React, Node.js, MongoDB, Express, TypeScript, Git
 # parse_text tests
 # ---------------------------------------------------------------------------
 
+
 class TestParseText:
     def test_extracts_email(self) -> None:
         result = parse_text(MINIMAL_RESUME)
@@ -97,6 +98,7 @@ class TestParseText:
 # ---------------------------------------------------------------------------
 # parse_file tests
 # ---------------------------------------------------------------------------
+
 
 class TestParseFile:
     def test_parses_sample_txt_file(self) -> None:

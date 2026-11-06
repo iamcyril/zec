@@ -9,9 +9,7 @@ from scoring.aggregator import aggregate
 
 class TestAggregateDecisions:
     def test_selected_when_score_at_select_threshold(self) -> None:
-        result = aggregate(
-            {"ats": 75.0, "screening": 75.0, "interview": 75.0, "technical": 75.0}
-        )
+        result = aggregate({"ats": 75.0, "screening": 75.0, "interview": 75.0, "technical": 75.0})
         assert result["decision"] == "selected"
         assert result["final_score"] == pytest.approx(75.0)
 

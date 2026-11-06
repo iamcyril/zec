@@ -87,9 +87,7 @@ def aggregate(
     normalised: dict[str, float] = {k: weight_map[k] / raw_total for k in common_keys}
 
     # Weighted sum.
-    final_score = round(
-        sum(scores[k] * normalised[k] for k in common_keys), 2
-    )
+    final_score = round(sum(scores[k] * normalised[k] for k in common_keys), 2)
 
     # Decision.
     if final_score >= select_at:

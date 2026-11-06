@@ -35,6 +35,7 @@ OCR_CHAR_THRESHOLD = 50
 # Optional dependency checks (soft)
 # ---------------------------------------------------------------------------
 
+
 def _has_tesseract() -> bool:
     """Return True if the Tesseract binary is discoverable on PATH."""
     return shutil.which("tesseract") is not None
@@ -76,6 +77,7 @@ def _extract_page_pymupdf(page: Any) -> str:
 
     Returns:
         Extracted page text with blocks sorted top-to-bottom, left-to-right.
+
     """
     blocks = page.get_text("blocks")  # type: ignore[attr-defined]
     # Each block: (x0, y0, x1, y1, text, block_no, block_type)
@@ -95,6 +97,7 @@ def _extract_tables_pdfplumber(pdf_path: Path, page_num: int) -> str:
 
     Returns:
         Tab-separated table cells joined by newlines, or empty string.
+
     """
     import pdfplumber  # noqa: PLC0415
 
@@ -121,6 +124,7 @@ def _ocr_page(pdf_path: Path, page_num: int, dpi: int = 300) -> str:
 
     Returns:
         OCR'd text string, or empty string if OCR unavailable/fails.
+
     """
     if not _has_tesseract():
         logger.warning(
@@ -135,8 +139,8 @@ def _ocr_page(pdf_path: Path, page_num: int, dpi: int = 300) -> str:
         )
         return ""
 
-    from pdf2image import convert_from_path  # noqa: PLC0415
     import pytesseract  # noqa: PLC0415
+    from pdf2image import convert_from_path  # noqa: PLC0415
 
     images = convert_from_path(
         str(pdf_path),
@@ -210,7 +214,9 @@ def read(path: str | Path) -> ExtractResult:
             except Exception as exc:  # noqa: BLE001
                 logger.warning(
                     "pdfplumber failed on page %d of '%s': %s",
-                    page_num + 1, path.name, exc,
+                    page_num + 1,
+                    path.name,
+                    exc,
                 )
 
         combined = "\n".join(t for t in [primary_text, table_text] if t).strip()
@@ -219,7 +225,9 @@ def read(path: str | Path) -> ExtractResult:
         if len(combined) < OCR_CHAR_THRESHOLD:
             logger.warning(
                 "PDF reader: page %d of '%s' has only %d chars — attempting OCR",
-                page_num + 1, path.name, len(combined),
+                page_num + 1,
+                path.name,
+                len(combined),
             )
             ocr_text = _ocr_page(path, page_num)
             if ocr_text.strip():
@@ -228,7 +236,9 @@ def read(path: str | Path) -> ExtractResult:
                 methods_used.add("ocr")
                 logger.info(
                     "OCR produced %d chars for page %d of '%s'",
-                    len(combined), page_num + 1, path.name,
+                    len(combined),
+                    page_num + 1,
+                    path.name,
                 )
 
         if combined:
@@ -243,7 +253,11 @@ def read(path: str | Path) -> ExtractResult:
 
     logger.info(
         "PDF reader: '%s' → %d pages, %d chars, method=%s, ocr=%s",
-        path.name, page_count, char_count, method_label, ocr_used,
+        path.name,
+        page_count,
+        char_count,
+        method_label,
+        ocr_used,
     )
 
     return ExtractResult(

@@ -40,8 +40,8 @@ logger = get_logger("zecpath.utils.text_cleaner")
 class CleanedResult(TypedDict):
     """Output of the text-cleaning pipeline."""
 
-    text: str             # Fully cleaned text
-    sections: list[str]   # Canonical section headings detected (in order)
+    text: str  # Fully cleaned text
+    sections: list[str]  # Canonical section headings detected (in order)
 
 
 # ---------------------------------------------------------------------------
@@ -135,13 +135,13 @@ for _canonical, _synonyms in _HEADING_SYNONYMS.items():
 # Characters in Unicode general categories Cc (control) and Cf (format)
 # that we want to strip.  We keep \t, \n, \r which are useful whitespace.
 _CTRL_CHAR_RE = re.compile(
-    r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f"     # C0 control (excl. \t\n\r)
-    r"\x80-\x9f"                              # C1 control
-    r"\u00ad"                                 # soft hyphen (U+00AD)
-    r"\u200b-\u200f"                          # zero-width chars
-    r"\u2028\u2029"                           # line/paragraph separator
-    r"\ufeff"                                 # BOM / zero-width no-break space
-    r"\u2060\u2061\u2062\u2063\u2064"         # word joiner and invisible operators
+    r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f"  # C0 control (excl. \t\n\r)
+    r"\x80-\x9f"  # C1 control
+    r"\u00ad"  # soft hyphen (U+00AD)
+    r"\u200b-\u200f"  # zero-width chars
+    r"\u2028\u2029"  # line/paragraph separator
+    r"\ufeff"  # BOM / zero-width no-break space
+    r"\u2060\u2061\u2062\u2063\u2064"  # word joiner and invisible operators
     r"]"
 )
 
@@ -149,10 +149,7 @@ _CTRL_CHAR_RE = re.compile(
 _HYPHEN_BREAK_RE = re.compile(r"-\n\s*")
 
 # Bullet markers to normalise → "-"
-_BULLET_RE = re.compile(
-    r"^[\s]*[•▪●○◦▸►➤✔✓★→\-–—*]+[\s]+"
-    , re.MULTILINE
-)
+_BULLET_RE = re.compile(r"^[\s]*[•▪●○◦▸►➤✔✓★→\-–—*]+[\s]+", re.MULTILINE)
 
 # Runs of horizontal whitespace (spaces + tabs) within a line
 _HORIZ_WS_RE = re.compile(r"[ \t]+")

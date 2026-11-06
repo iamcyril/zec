@@ -29,6 +29,7 @@ _EXPERIENCE_WEIGHT = 0.30
 # Data models
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class JobRequirements:
     """Specification of the skills and experience required for a role.
@@ -66,6 +67,7 @@ class ATSResult:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def score_resume(
     resume: ParsedResume,

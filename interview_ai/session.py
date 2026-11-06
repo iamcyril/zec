@@ -29,6 +29,7 @@ logger = get_logger("zecpath.interview")
 # Status enum
 # ---------------------------------------------------------------------------
 
+
 class InterviewStatus(str, Enum):
     """Possible lifecycle states for an :class:`InterviewSession`.
 
@@ -44,6 +45,7 @@ class InterviewStatus(str, Enum):
 # ---------------------------------------------------------------------------
 # Data model
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class InterviewSession:
@@ -76,8 +78,7 @@ class InterviewSession:
         """
         if self.status != InterviewStatus.CREATED:
             raise RuntimeError(
-                f"Cannot start session {self.session_id!r}: "
-                f"already in state '{self.status.value}'."
+                f"Cannot start session {self.session_id!r}: already in state '{self.status.value}'."
             )
         self.status = InterviewStatus.IN_PROGRESS
         log_ai_event(

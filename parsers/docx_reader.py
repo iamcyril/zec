@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import warnings
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import TypedDict
 
 from docx import Document as _DocxDocument
 from docx.document import Document as DocxDoc
@@ -33,12 +33,12 @@ logger = get_logger("zecpath.parsers.docx")
 class ExtractResult(TypedDict):
     """Uniform output produced by every file reader."""
 
-    file: str           # Original file path as string
-    type: str           # MIME-ish label: "docx" | "pdf" | "doc"
-    pages: int          # Page / section count (best estimate)
-    method_used: str    # e.g. "python-docx", "pymupdf", "ocr"
-    ocr_used: bool      # True when OCR was needed
-    text: str           # Full extracted text (pre-clean)
+    file: str  # Original file path as string
+    type: str  # MIME-ish label: "docx" | "pdf" | "doc"
+    pages: int  # Page / section count (best estimate)
+    method_used: str  # e.g. "python-docx", "pymupdf", "ocr"
+    ocr_used: bool  # True when OCR was needed
+    text: str  # Full extracted text (pre-clean)
 
 
 # ---------------------------------------------------------------------------

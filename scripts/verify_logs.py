@@ -20,9 +20,9 @@ for i, line in enumerate(lines):
     try:
         obj = json.loads(line)
         score = obj.get("score", obj.get("final_score", "-"))
-        print(f"  [{i+1}] event={obj.get('event')!r:30s} | score={score}")
+        print(f"  [{i + 1}] event={obj.get('event')!r:30s} | score={score}")
     except json.JSONDecodeError as e:
-        print(f"  [{i+1}] INVALID JSON: {e}")
+        print(f"  [{i + 1}] INVALID JSON: {e}")
         all_valid = False
 
 print()

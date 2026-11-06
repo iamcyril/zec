@@ -7,7 +7,7 @@ Usage::
 
     python run_batch.py [--raw-dir PATH] [--log-dir PATH]
 
-Arguments
+Arguments:
 ---------
 --raw-dir   Directory to scan for input files (default: data/raw)
 --log-dir   Directory to write the summary report (default: logs)
@@ -44,7 +44,8 @@ _SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".doc"}
 def _collect_files(raw_dir: Path) -> list[Path]:
     """Return all supported resume files in *raw_dir* (non-recursive)."""
     files = [
-        f for f in sorted(raw_dir.iterdir())
+        f
+        for f in sorted(raw_dir.iterdir())
         if f.is_file() and f.suffix.lower() in _SUPPORTED_EXTENSIONS
     ]
     return files
@@ -110,7 +111,7 @@ def main() -> int:
     """Batch-extract all resumes in the raw directory and write a summary report."""
     parser = argparse.ArgumentParser(description="Batch-extract all resumes in data/raw/")
     parser.add_argument("--raw-dir", default="data/raw", help="Input directory (default: data/raw)")
-    parser.add_argument("--log-dir", default="logs",    help="Log directory (default: logs)")
+    parser.add_argument("--log-dir", default="logs", help="Log directory (default: logs)")
     parser.add_argument("--verbose", action="store_true", help="Print each result to stdout")
     args = parser.parse_args()
 
@@ -149,7 +150,9 @@ def main() -> int:
     finished_at = datetime.now(tz=timezone.utc)
 
     # Write summary report
-    report = _format_report(results, raw_dir=raw_dir, started_at=started_at, finished_at=finished_at)
+    report = _format_report(
+        results, raw_dir=raw_dir, started_at=started_at, finished_at=finished_at
+    )
     report_path = log_dir / "test_results.log"
     report_path.write_text(report, encoding="utf-8")
 
@@ -159,7 +162,9 @@ def main() -> int:
     ok_count = sum(1 for r in results if r["status"] == "ok")
     logger.info(
         "Batch run complete: %d/%d succeeded, report at '%s'",
-        ok_count, len(results), report_path,
+        ok_count,
+        len(results),
+        report_path,
     )
 
     return 0 if ok_count == len(results) else 1

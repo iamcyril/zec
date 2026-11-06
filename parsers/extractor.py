@@ -54,7 +54,9 @@ def _write_outputs(stem: str, cleaned_text: str, record: dict[str, Any]) -> None
     )
     logger.info(
         "Extractor: wrote '%s.txt' and '%s.json' to %s",
-        stem, stem, _EXTRACTED_DIR,
+        stem,
+        stem,
+        _EXTRACTED_DIR,
     )
 
 
@@ -151,7 +153,8 @@ def extract_file(path: str | Path) -> dict[str, Any]:
     except Exception as exc:  # noqa: BLE001
         logger.error(
             "Extractor: failed to process '%s': %s",
-            path.name, exc,
+            path.name,
+            exc,
             exc_info=True,
         )
         log_ai_event(

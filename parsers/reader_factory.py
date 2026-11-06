@@ -26,7 +26,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from parsers.docx_reader import ExtractResult, read as read_docx
+from parsers.docx_reader import ExtractResult
+from parsers.docx_reader import read as read_docx
 from parsers.pdf_reader import read as read_pdf
 from utils.logger import get_logger
 
@@ -70,8 +71,10 @@ def _convert_doc_to_docx(path: Path) -> Path:
             [
                 soffice,
                 "--headless",
-                "--convert-to", "docx",
-                "--outdir", tmp_dir,
+                "--convert-to",
+                "docx",
+                "--outdir",
+                tmp_dir,
                 str(path),
             ],
             capture_output=True,
@@ -88,9 +91,7 @@ def _convert_doc_to_docx(path: Path) -> Path:
 
     converted = Path(tmp_dir) / path.with_suffix(".docx").name
     if not converted.exists():
-        raise RuntimeError(
-            f"LibreOffice ran but output DOCX not found at '{converted}'"
-        )
+        raise RuntimeError(f"LibreOffice ran but output DOCX not found at '{converted}'")
 
     logger.info("Conversion complete → '%s'", converted.name)
     return converted
@@ -126,8 +127,7 @@ def read_file(path: str | Path) -> ExtractResult:
 
     if suffix not in _SUPPORTED:
         raise ValueError(
-            f"Unsupported file extension '{suffix}'. "
-            f"Supported: {', '.join(sorted(_SUPPORTED))}"
+            f"Unsupported file extension '{suffix}'. Supported: {', '.join(sorted(_SUPPORTED))}"
         )
 
     logger.info("reader_factory: routing '%s' (ext=%s)", path.name, suffix)

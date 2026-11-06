@@ -70,6 +70,7 @@ _QUESTIONS: list[dict[str, str]] = [
 # Public API
 # ---------------------------------------------------------------------------
 
+
 def get_questions() -> list[dict[str, str]]:
     """Return the ordered list of pre-screening interview questions.
 

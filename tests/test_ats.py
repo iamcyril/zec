@@ -11,6 +11,7 @@ from parsers.resume_parser import ParsedResume
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_resume(
     skills: list[str],
     experience_years: int = 0,
@@ -40,6 +41,7 @@ def _make_job(
 # ---------------------------------------------------------------------------
 # Perfect match tests
 # ---------------------------------------------------------------------------
+
 
 class TestPerfectMatch:
     def test_perfect_skill_and_experience_gives_100(self) -> None:
@@ -74,6 +76,7 @@ class TestPerfectMatch:
 # ---------------------------------------------------------------------------
 # Partial match tests
 # ---------------------------------------------------------------------------
+
 
 class TestPartialMatch:
     def test_partial_skill_match_lowers_score(self) -> None:

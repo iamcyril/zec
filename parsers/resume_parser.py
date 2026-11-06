@@ -55,9 +55,9 @@ _EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
 
 # Regex for phone numbers (international and local formats).
 _PHONE_RE = re.compile(
-    r"(?:\+\d{1,3}[\s\-]?)?"        # optional country code
-    r"(?:\(?\d{2,4}\)?[\s\-]?)?"    # optional area code
-    r"\d{3,4}[\s\-]?\d{4}"          # subscriber number
+    r"(?:\+\d{1,3}[\s\-]?)?"  # optional country code
+    r"(?:\(?\d{2,4}\)?[\s\-]?)?"  # optional area code
+    r"\d{3,4}[\s\-]?\d{4}"  # subscriber number
 )
 
 # Patterns for extracting years of experience from common phrasings.
@@ -71,6 +71,7 @@ _EXPERIENCE_PATTERNS = [
 # ---------------------------------------------------------------------------
 # Data model
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ParsedResume:
@@ -95,6 +96,7 @@ class ParsedResume:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def parse_text(text: str) -> ParsedResume:
     """Parse a resume from a plain-text string.
