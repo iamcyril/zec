@@ -12,7 +12,7 @@ print(f"ai_activity.log   : {os.path.exists(ai_log)} ({os.path.getsize(ai_log)} 
 print()
 print("=== ai_activity.log (all lines) ===")
 with open(ai_log, encoding="utf-8") as f:
-    lines = [line.strip() for l in f if l.strip()]
+    lines = [line.strip() for line in f if l.strip()]
 
 print(f"Total JSON lines: {len(lines)}")
 all_valid = True
