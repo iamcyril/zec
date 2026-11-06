@@ -78,18 +78,108 @@ zecpath-ai/
 
 | Module | File | PRD Phase | Description |
 |--------|------|-----------|-------------|
-| **parsers** | `parsers/resume_parser.py` | 1–2 | Extract email, phone, skills, experience from resume text |
+| **parsers/docx_reader** | `parsers/docx_reader.py` | 1 | DOCX text extraction (paragraphs, tables, headers, textboxes) |
+| **parsers/pdf_reader** | `parsers/pdf_reader.py` | 1 | PDF extraction: PyMuPDF + pdfplumber tables + OCR fallback |
+| **parsers/reader_factory** | `parsers/reader_factory.py` | 1 | Route by extension → uniform ExtractResult |
+| **parsers/extractor** | `parsers/extractor.py` | 1 | Orchestrator: read → clean → write .txt + .json |
+| **parsers/resume_parser** | `parsers/resume_parser.py` | 1–2 | Extract email, phone, skills, experience from resume text |
+| **utils/text_cleaner** | `utils/text_cleaner.py` | 1 | Unicode NFKC, bullet normalise, heading synonym map |
 | **ats_engine** | `ats_engine/matcher.py` | 2 | Score resume vs. job requirements (0–100) |
 | **screening_ai** | `screening_ai/questions.py` | 3–5 | AI voice screening question bank (7 questions) |
 | **interview_ai** | `interview_ai/session.py` | 11–25 | Interview session lifecycle state machine |
 | **scoring** | `scoring/aggregator.py` | 20, 44, 70, 88 | Weighted multi-signal aggregation → hiring decision |
 | **utils/config** | `utils/config.py` | All | Environment-based settings (frozen dataclass) |
 | **utils/logger** | `utils/logger.py` | All | Console + rotating file + JSON AI activity logging |
-| **utils/text** | `utils/text.py` | All | Text normalisation utilities |
+| **utils/text** | `utils/text.py` | All | Legacy text normalisation utilities |
+
+---
+
+## Resume Text Extraction Engine
+
+### Quick usage
+
+```python
+from parsers.extractor import extract_file
+
+# Single file
+result = extract_file("data/raw/john_smith.pdf")
+print(result["status"])      # "ok" or "error"
+print(result["sections"])    # ["Summary", "Experience", "Skills", ...]
+print(result["char_count"])  # int
+```
+
+On success, two files are written:
+- `data/extracted/<stem>.txt` — cleaned plain text
+- `data/extracted/<stem>.json` — full structured record
+
+### JSON record format
+
+```json
+{
+  "file": "data/raw/john_smith.pdf",
+  "type": "pdf",
+  "pages": 2,
+  "method_used": "pymupdf",
+  "ocr_used": false,
+  "sections": ["Summary", "Experience", "Skills", "Education"],
+  "char_count": 3471,
+  "warnings": [],
+  "text": "..."
+}
+```
+
+### Batch processing
+
+```bash
+# Drop resumes into data/raw/, then:
+python run_batch.py
+
+# With verbose per-file output:
+python run_batch.py --verbose
+
+# Custom directories:
+python run_batch.py --raw-dir /my/resumes --log-dir /my/logs
+```
+
+The summary report is written to `logs/test_results.log`.
+
+### Supported file types
+
+| Extension | Reader | Notes |
+|-----------|--------|-------|
+| `.pdf` | PyMuPDF + pdfplumber | Two-column layout sorted correctly; OCR fallback for scanned pages |
+| `.docx` | python-docx | Paragraphs, tables, headers/footers, text boxes |
+| `.doc` | LibreOffice → DOCX | Requires LibreOffice (`winget install LibreOffice.LibreOffice`) |
+
+### OCR setup (optional)
+
+OCR triggers only when a PDF page yields fewer than 50 characters.
+If Tesseract is absent, OCR is skipped with a warning — no crash.
+
+```bash
+# Windows
+winget install UB-Mannheim.TesseractOCR
+pip install pytesseract pdf2image
+```
+
+### Text cleaning pipeline
+
+`utils/text_cleaner.clean(text)` applies in order:
+
+1. Unicode NFKC normalisation
+2. Strip control characters and zero-width spaces
+3. Fix soft-hyphen line-breaks
+4. Normalise all bullet markers (`•`, `▪`, `●`, `➤`, `*`, `-`) → `- `
+5. Collapse extra whitespace
+6. Map heading synonyms → canonical names (`WORK HISTORY` → `Experience`)
+
+Tech-term capitalisation (`React`, `Node.js`, `AWS`) is **preserved** — only
+heading lines are case-normalised.
 
 ---
 
 ## Logging Usage
+
 
 ```python
 from utils.logger import get_logger, log_ai_event

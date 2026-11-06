@@ -6,11 +6,10 @@ required at this stage.
 
 Supported file types
 --------------------
-- ``.txt`` — plain text (via :func:`parse_file`)
-
-Planned (will raise :class:`NotImplementedError` until implemented):
-- ``.pdf`` — via ``pypdf``
-- ``.docx`` — via ``python-docx``
+- ``.txt`` — plain text (read directly)
+- ``.pdf`` — via :mod:`parsers.pdf_reader` (PyMuPDF + OCR fallback)
+- ``.docx`` — via :mod:`parsers.docx_reader` (python-docx)
+- ``.doc`` — converted via LibreOffice, then DOCX reader
 """
 
 from __future__ import annotations
@@ -22,6 +21,9 @@ from pathlib import Path
 from utils.logger import get_logger
 
 logger = get_logger("zecpath.parsers.resume")
+
+# Lazy import to avoid circular-import issues at module load time.
+# reader_factory is only needed inside parse_file().
 
 # ---------------------------------------------------------------------------
 # Known-skills vocabulary
@@ -141,8 +143,9 @@ def parse_text(text: str) -> ParsedResume:
 def parse_file(path: str | Path) -> ParsedResume:
     """Parse a resume from a file on disk.
 
-    Currently only ``.txt`` files are supported.  Other extensions raise
-    :class:`NotImplementedError` so callers know they need a dedicated reader.
+    Supported extensions: ``.txt``, ``.pdf``, ``.docx``, ``.doc``.
+    PDF and DOCX/DOC files are routed through
+    :func:`~parsers.reader_factory.read_file` before text extraction.
 
     Args:
         path: Filesystem path to the resume file.
@@ -151,15 +154,17 @@ def parse_file(path: str | Path) -> ParsedResume:
         A :class:`ParsedResume` populated with extracted fields.
 
     Raises:
-        NotImplementedError: If the file extension is not ``.txt``.
         FileNotFoundError: If the file does not exist.
+        ValueError: If the extension is not supported.
 
     """
+    from parsers.reader_factory import read_file  # noqa: PLC0415
+
     path = Path(path)
     if path.suffix.lower() == ".txt":
         text = path.read_text(encoding="utf-8")
         return parse_text(text)
-    raise NotImplementedError(
-        f"parse_file does not yet support '{path.suffix}' files. "
-        "Planned: .pdf (pypdf), .docx (python-docx)."
-    )
+
+    # Delegate binary formats to the reader factory
+    result = read_file(path)
+    return parse_text(result["text"])

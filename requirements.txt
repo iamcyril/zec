@@ -1,8 +1,13 @@
 # Core runtime dependencies for Zecpath AI Platform
 python-dotenv>=1.0.0
 pydantic>=2.6
-pypdf>=4.0.0
 python-docx>=1.1.0
+
+# Resume text extraction engine
+PyMuPDF>=1.23.0          # Primary PDF text extraction (fitz)
+pdfplumber>=0.11.0       # PDF table extraction supplement
+pdf2image>=1.17.0        # PDF → image rendering for OCR fallback
+pytesseract>=0.3.13      # OCR engine wrapper (requires Tesseract on PATH)
 
 # --- Future AI/ML dependencies (uncomment when ready) ---
 # spacy>=3.7

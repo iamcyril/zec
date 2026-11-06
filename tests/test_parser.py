@@ -120,10 +120,9 @@ class TestParseFile:
         result = parse_file(SAMPLE_FILE)
         assert result.experience_years == 3
 
-    def test_unsupported_extension_raises_not_implemented(self) -> None:
-        with pytest.raises(NotImplementedError, match=r"\.pdf"):
-            parse_file("resume.pdf")
-
-    def test_docx_extension_raises_not_implemented(self) -> None:
-        with pytest.raises(NotImplementedError, match=r"\.docx"):
-            parse_file("resume.docx")
+    def test_unsupported_extension_raises_value_error(self, tmp_path: Path) -> None:
+        """reader_factory raises ValueError for truly unsupported extensions."""
+        weird = tmp_path / "resume.xyz"
+        weird.write_text("hello")
+        with pytest.raises(ValueError, match="Unsupported file extension"):
+            parse_file(weird)
