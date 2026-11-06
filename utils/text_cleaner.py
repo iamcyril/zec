@@ -1,4 +1,4 @@
-"""Resume text cleaning pipeline for Zecpath AI Platform.
+r"""Resume text cleaning pipeline for Zecpath AI Platform.
 
 Transforms raw extracted text into a normalised, consistent form ready for
 downstream parsing and section detection.  All transformations preserve the
